@@ -37,3 +37,12 @@ test('User session persists after refresh', async ({ page }) => {
 
   await expect(page).toHaveURL(/inventory/);
 });
+
+test('Locked user cannot login', async ({ page }) => {
+  const login = new LoginPage(page);
+
+  await login.goto();
+  await login.login(users.locked.username, users.locked.password);
+
+  await expect(page.locator('[data-test="error"]')).toBeVisible();
+});
